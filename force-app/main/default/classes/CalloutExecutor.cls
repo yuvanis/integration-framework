@@ -12,7 +12,7 @@ public with sharing class CalloutExecutor {
         return requestBody;
     }
 
-    public Object execute(Callout callout) {
+    public static Object execute(Callout callout) {
         HttpRequest httpRequest = new HttpRequest();
         httpRequest.setEndpoint(callout.endPointURL);
         httpRequest.setMethod(callout.httpMethod);
@@ -23,7 +23,6 @@ public with sharing class CalloutExecutor {
                 httpRequest.setHeader(key, val);
             }
         }
-
         if (callout.buildRequestBody() != null) {
             httpRequest.setBody(replaceProtectedParameters(callout.buildRequestBody(), callout.secureMap));
         }

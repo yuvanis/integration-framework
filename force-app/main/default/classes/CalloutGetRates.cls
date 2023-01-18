@@ -19,7 +19,7 @@ public with sharing class CalloutGetRates extends Callout {
 
     public override Object parseResponse(String responseStr) {
         Map<String, Decimal> result = new Map<String, Decimal>();
-        Map<String, CalloutGetRates.Rates> rates = (Map<String, Rates>) JSON.deserialize(responseStr, Map<String, CalloutGetRates.Rates>.class);
+        Map<String, CalloutGetRates.Rates> rates = (Map<String, CalloutGetRates.Rates>) JSON.deserialize(responseStr, Map<String, CalloutGetRates.Rates>.class);
         for (String key : rates.keySet()) {
             Rates val = rates.get(key);
             result.put(key, val.rate);
