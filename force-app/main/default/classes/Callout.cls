@@ -4,8 +4,11 @@
 
 public with sharing abstract class Callout {
 
-    public HttpRequest httpRequest = new HttpRequest();
-    public Integration_Log__c integrationLog = new Integration_Log__c();
+    public String endPointURL;
+    public String httpMethod;
+    public Integer timeout = 120000;
+    public Map<String, String> mapHeader = new Map<String, String>();
+    public Map<String, String> secureMap = new Map<String, String>();
 
     public abstract Type getType();
     public abstract String buildRequestBody();

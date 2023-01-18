@@ -5,9 +5,8 @@
 public with sharing class CalloutGetRates extends Callout {
 
     public CalloutGetRates() {
-        this.httpRequest = new HttpRequest();
-        this.httpRequest.setMethod('GET');
-        this.httpRequest.setEndpoint('https://www.floatrates.com/daily/usd.json');
+        this.endPointURL = 'callout:ExchangeRates';
+        this.httpMethod = 'GET';
     }
 
     public override Type getType() {
@@ -19,7 +18,17 @@ public with sharing class CalloutGetRates extends Callout {
     }
 
     public override Object parseResponse(String responseStr) {
-        return JSON.deserializeUntyped(responseStr);
+        Map<String, Decimal> result = new Map<String, Decimal>();
+        Map<String, CalloutGetRates.Rates> rates = (Map<String, Rates>) JSON.deserialize(responseStr, Map<String, CalloutGetRates.Rates>.class);
+        for (String key : rates.keySet()) {
+            Rates val = rates.get(key);
+            result.put(key, val.rate);
+        }
+        return result;
+    }
+
+    public class Rates {
+        public Decimal rate;
     }
 
 }

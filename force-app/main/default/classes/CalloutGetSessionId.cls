@@ -9,27 +9,23 @@ public with sharing class CalloutGetSessionId extends Callout {
     private String securityToken;
 
     public CalloutGetSessionId(String username, String password, String securityToken) {
-
         this.username = username;
         this.password = password;
         this.securityToken = securityToken;
         if (this.securityToken == null) this.securityToken = '';
-
-        this.httpRequest.setMethod('POST');
-        this.httpRequest.setEndpoint('https://login.salesforce.com/services/Soap/c/56.0');
-        this.httpRequest.setTimeout(120000);
-//        Map<String, String> mapHeader = new Map<String, String>{
-//                'Connection' => 'Keep-Alive',
-//                'Content-Type' => 'text/xml;charset=UTF-8',
-//                'SOAPAction' => 'login',
-//                'Content-Length' => '410'
-//        };
-        this.httpRequest.setHeader('Connection', 'Keep-Alive');
-        this.httpRequest.setHeader('Content-Type', 'text/xml;charset=UTF-8');
-        this.httpRequest.setHeader('SOAPAction', 'login');
-        this.httpRequest.setHeader('Content-Length', '410');
-
-        this.httpRequest.setBody(buildRequestBody());
+        this.endPointURL = 'callout:SalesforceLogin';
+        this.httpMethod = 'POST';
+        this.mapHeader.putAll(new Map<String, String>{
+                'Connection' => 'Keep-Alive',
+                'Content-Type' => 'text/xml;charset=UTF-8',
+                'SOAPAction' => 'login',
+                'Content-Length' => '410'
+        });
+        this.secureMap.putAll(new Map<String, String>{
+                'secureUsername' => this.username,
+                'securePassword' => this.password,
+                'securityToken' => this.securityToken
+        });
     }
 
     public override Type getType() {
@@ -42,8 +38,8 @@ public with sharing class CalloutGetSessionId extends Callout {
                    '</soapenv:Header>' +
                    '<soapenv:Body>' +
                         '<urn:login>' +
-                            '<urn:username>' + this.username + '</urn:username>' +
-                            '<urn:password>' + this.password + this.securityToken + '</urn:password>' +
+                            '<urn:username>secureUsername</urn:username>' +
+                            '<urn:password>securePasswordsecurityToken</urn:password>' +
                         '</urn:login>' +
                     '</soapenv:Body>' +
                '</soapenv:Envelope>';
