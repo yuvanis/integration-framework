@@ -4,13 +4,13 @@
 
 public with sharing class CalloutGetSessionId extends Callout {
 
-    private String username;
-    private String password;
+    private final String USERNAME;
+    private final String PASSWORD;
     private String securityToken;
 
     public CalloutGetSessionId(String username, String password, String securityToken) {
-        this.username = username;
-        this.password = password;
+        this.USERNAME = username;
+        this.PASSWORD = password;
         this.securityToken = securityToken;
         if (this.securityToken == null) this.securityToken = '';
         this.endPointURL = 'callout:SalesforceLogin';
@@ -21,9 +21,9 @@ public with sharing class CalloutGetSessionId extends Callout {
                 'SOAPAction' => 'login',
                 'Content-Length' => '410'
         });
-        this.secureMap.putAll(new Map<String, String>{
-                'secureUsername' => this.username,
-                'securePassword' => this.password,
+        this.secureMap.putAll(new Map<String, String> {
+                'secureUsername' => this.USERNAME,
+                'securePassword' => this.PASSWORD,
                 'securityToken' => this.securityToken
         });
     }
@@ -34,15 +34,15 @@ public with sharing class CalloutGetSessionId extends Callout {
 
     public override String buildRequestBody() {
         return '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:enterprise.soap.sforce.com">' +
-                   '<soapenv:Header>' +
-                   '</soapenv:Header>' +
-                   '<soapenv:Body>' +
-                        '<urn:login>' +
-                            '<urn:username>secureUsername</urn:username>' +
-                            '<urn:password>securePasswordsecurityToken</urn:password>' +
-                        '</urn:login>' +
-                    '</soapenv:Body>' +
-               '</soapenv:Envelope>';
+                '<soapenv:Header>' +
+                '</soapenv:Header>' +
+                '<soapenv:Body>' +
+                '<urn:login>' +
+                '<urn:username>secureUsername</urn:username>' +
+                '<urn:password>securePasswordsecurityToken</urn:password>' +
+                '</urn:login>' +
+                '</soapenv:Body>' +
+                '</soapenv:Envelope>';
     }
 
     public override Object parseResponse(String responseStr) {
@@ -50,7 +50,7 @@ public with sharing class CalloutGetSessionId extends Callout {
         document.load(responseStr);
         String soapenv = 'http://schemas.xmlsoap.org/soap/envelope/';
         String urn = 'urn:enterprise.soap.sforce.com';
-        String sessionId = (String)document.getRootElement().
+        String sessionId = (String) document.getRootElement().
                 getChildElement('Body', soapenv).
                 getChildElement('loginResponse', urn).
                 getChildElement('result', urn).
