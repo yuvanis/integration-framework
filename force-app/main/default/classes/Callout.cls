@@ -4,6 +4,9 @@
 
 public with sharing abstract class Callout {
 
+    public static final String HTTP_METHOD_GET = 'GET';
+    public static final String HTTP_METHOD_POST = 'POST';
+
     protected String endPointURL;
     protected String httpMethod;
     protected Map<String, String> mapHeader = new Map<String, String>();

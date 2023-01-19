@@ -6,7 +6,7 @@ public with sharing class CalloutGetRates extends Callout {
 
     public CalloutGetRates() {
         this.endPointURL = 'callout:ExchangeRates';
-        this.httpMethod = 'GET';
+        this.httpMethod = HTTP_METHOD_GET;
     }
 
     public override Type getType() {

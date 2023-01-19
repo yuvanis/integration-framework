@@ -6,6 +6,7 @@ public with sharing class CalloutGetSessionId extends Callout {
 
     private final String USERNAME;
     private final String PASSWORD;
+
     private String securityToken;
 
     public CalloutGetSessionId(String username, String password, String securityToken) {
@@ -14,7 +15,7 @@ public with sharing class CalloutGetSessionId extends Callout {
         this.securityToken = securityToken;
         if (this.securityToken == null) this.securityToken = '';
         this.endPointURL = 'callout:SalesforceLogin';
-        this.httpMethod = 'POST';
+        this.httpMethod = HTTP_METHOD_POST;
         this.mapHeader.putAll(new Map<String, String>{
                 'Connection' => 'Keep-Alive',
                 'Content-Type' => 'text/xml;charset=UTF-8',
